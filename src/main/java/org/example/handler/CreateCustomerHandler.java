@@ -13,7 +13,7 @@ import org.example.service.CustomerService;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LambdaHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
+public class CreateCustomerHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
     @Override
     public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent requestEvent, Context context) {
@@ -26,23 +26,19 @@ public class LambdaHandler implements RequestHandler<APIGatewayProxyRequestEvent
 
 
     private APIGatewayProxyResponseEvent createAPIResponse(Customer body, int statusCode){
-        Map<String,String> headers = new HashMap<>();
+        var headers = new HashMap<String,String>();
         headers.put("Content-Type","application/json");
-        headers.put("X-amazon-author","bruno");
-        headers.put("X-amazon-apiVersion","v1");
+        //headers.put("X-amazon-author","bruno");
+        //headers.put("X-amazon-apiVersion","v1");
 
         APIGatewayProxyResponseEvent responseEvent = new APIGatewayProxyResponseEvent();
         try {
             responseEvent.setBody(new ObjectMapper().writeValueAsString(body));
-
-        responseEvent.setHeaders(headers);
-        responseEvent.setStatusCode(statusCode);
-        return responseEvent;
+            responseEvent.setHeaders(headers);
+            responseEvent.setStatusCode(statusCode);
+            return responseEvent;
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-
     }
-
-
 }
